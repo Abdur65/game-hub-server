@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 3000;
 
 app.use(cors());
@@ -38,8 +38,16 @@ async function run() {
     // API for fetching all games
 
     app.get("/all-games", async(req, res) => {
-      const result = await gameCollection.find({}).toArray
-      ()
+      const result = await gameCollection.find().toArray()
+      res.send(result);
+    })
+    //API for fetching single details
+    app.get("/game/:id", async(req, res) =>{
+      const id = req.params.id;
+      //console.log(id);
+      //find a game using id passed as param
+      const result = await gameCollection.findOne({_id: new ObjectId(id)});
+
       res.send(result);
     })
 

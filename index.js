@@ -51,6 +51,21 @@ async function run() {
       res.send(result);
     })
 
+    // API for updating rows in the manageProduct table
+    // put() used for U of the CRUD
+    app.put("/update-by-id/:id", async(req, res) =>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updatedGame = req.body;
+
+      const updates = {$set:updatedGame}
+
+      // //Now call the update method for updating selecting query
+      const result = await gameCollection.updateOne(filter, updates);
+      
+      res.send(result);
+    })
+
   } finally {
 
     

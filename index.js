@@ -93,6 +93,42 @@ async function run() {
 
       res.send(result);
     })
+
+    //API for finding a single team member
+    app.get("/teammates/:id", async (req, res) => {
+      const id = req.params.id;
+      //console.log(id);
+      //find a game using id passed as param
+      const result = await teamCollection.findOne({ _id: new ObjectId(id) });
+
+      res.send(result);
+    });
+
+    //API for updating rows in MangaTeams
+    app.put("/updateteam-by-id/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updatedTeam = req.body;
+
+      const updates = { $set: updatedTeam };
+
+      // //Now call the update method for updating selecting query
+      const result = await teamCollection.updateOne(filter, updates);
+
+      res.send(result);
+    });
+
+    //API for deleting teammate
+    app.delete("/deleteteam-by-id/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+
+      // calling the deleteone method
+      const result = await teamCollection.deleteOne(filter);
+
+      res.send(result);
+    });
+
   } finally {
   }
 }
